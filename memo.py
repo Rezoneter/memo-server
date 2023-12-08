@@ -12,20 +12,19 @@ class MemoListREsource(Resource) :
  
         user_id = get_jwt_identity()
 
-        try:
-            connection = get_connection
-            query ='''insert into memo
+        try :
+            connection = get_connection()
+            query = '''insert into memo
                     (userId, title, date, content)
                     values
-                    (%s ,%s, %s, %s, %s);'''
-            record = (data['title'],data['date'],data['content'],
-                      memo_id, user_id)
+                    ( %s, %s, %s, %s);'''
+            record = (user_id,
+                      data['title'],
+                      data['date'],
+                      data['content'])
             cursor = connection.cursor()
-
-            cursor.execute( query, record )
-
+            cursor.execute(query, record)
             connection.commit()
-
             cursor.close()
             connection.close()
         
